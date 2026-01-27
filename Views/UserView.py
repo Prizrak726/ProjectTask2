@@ -3,7 +3,7 @@ from re import search
 from tkinter import *
 from tkinter import ttk
 from Controllers.UserControllers import UserController
-from Views.SearchView import SaerchView
+from Views.SearchView import SearchView
 
 class UserView(Tk):
     def __init__(self):
@@ -111,11 +111,12 @@ class UserView(Tk):
             borderwidth=1,
             padding=[8,10]
         )
-        self.search_frame = ttk.Frame(
-            fill=X, # заполнение
+        self.search_frame.pack(
+            # fill=X,  # заполнение
             padx=10, # расположение по оси х от верхней левой точки окна
             pady=10
         )
+
         self.label_search = ttk.Label(self.search_frame, text="Найти пользователя по email")
         self.label_search.grid(row=0)
         self.text_search = Text(self.search_frame, height=5, width=50)
@@ -126,7 +127,7 @@ class UserView(Tk):
     def search(self):
         self.string = self.text_search.get("0.0", "end") # передачи значения из строки ввода text_search
         self.string = self.string.split()
-        window = SaerchView(search_string=self.string)
+        window = SearchView(search_string=self.string)
         self.destroy()
 
     # Для обновления данных в таблице создал метод добавления записей из БД
@@ -167,8 +168,6 @@ class UserView(Tk):
     def clear(self):
         '''
         Метод очистит окна Treeview
-
-        :return:
         '''
         self.add_name.delete(0,END) # с 0-го индекса до конца
         self.add_email.delete(0,END) # с 0-го индекса до конца
