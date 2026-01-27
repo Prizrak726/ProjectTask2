@@ -8,6 +8,5 @@ mysql_db = MySQLDatabase('SereD62_Task2',
                          port=3306)
 if __name__ == '__main__':
 
-
     print(mysql_db.connect())
 
