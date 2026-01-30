@@ -1,61 +1,136 @@
 from tkinter import *
-from tkinter import ttk
+from tkinter import ttk, messagebox
 
-from Controllers.UserControllers import UserController
 
-class SearchView(Tk):
-    def __init__(self, search_string):
-        super().__init__()
+class SimpleSearchView:
+    """Упрощенный класс для отображения результатов поиска"""
 
-        self.search_string = search_string # Из строки поиска в окне UserView, значение передаётся атрибуту self.search_string
+    @staticmethod
+    def show_results(parent, results, search_string):
+        """Показать результаты поиска"""
+        if not results:
+            messagebox.showinfo("Результаты поиска",
+                                f"Пользователи по запросу '{search_string}' не найдены")
+            return
 
-        # Атрибуты окна
-        self.title("Найденные пользователи")
-        self.geometry("1280x800")
+        # Создаем окно для результатов
+        window = Toplevel(parent)
+        window.title(f"Результаты поиска: {search_string}")
+        window.geometry("1000x600")
 
-        # Frame для таблицы
-        self.table_frame = ttk.Frame(
-            self,
-            padding=20
-        )
-        self.table_frame.pack(
-            anchor=CENTER,
-            fill=X,
-            padx= 10,
-            pady = 10
-        )
+        # Создаем интерфейс
+        SimpleSearchView._create_interface(window, results, search_string)
+
+        return window
+
+    @staticmethod
+    def _create_interface(window, results, search_string):
+        """Создание интерфейса окна поиска"""
+        # Главный фрейм
+        main_frame = ttk.Frame(window)
+        main_frame.pack(fill=BOTH, expand=True, padx=20, pady=20)
+
+        # Заголовок
+        title_label = ttk.Label(main_frame,
+                                text=f"Результаты поиска: '{search_string}'",
+                                font=("Arial", 14, "bold"))
+        title_label.pack(pady=(0, 20))
+
+        # Информация о количестве
+        count_label = ttk.Label(main_frame,
+                                text=f"Найдено пользователей: {len(results)}",
+                                font=("Arial", 10))
+        count_label.pack(pady=(0, 10))
+
+        # Фрейм для таблицы
+        table_frame = ttk.Frame(main_frame)
+        table_frame.pack(fill=BOTH, expand=True)
+
         # Создание таблицы
-        self.colums = ('id', 'name', 'email', 'age', 'registration_date') # Столбцы
-        self.table_data = ttk.Treeview(self, columns=self.colums, show='headings')
-        # Заголовки
-        self.table_data.heading('id', text='№')
-        self.table_data.heading('name', text='Имя')
-        self.table_data.heading('email', text='Почта')
-        self.table_data.heading('age', text='Возраст')
-        self.table_data.heading('registration_date', text='Дата регистрации')
+        columns = ('id', 'name', 'email', 'age', 'registration_date')
+        table = ttk.Treeview(table_frame,
+                             columns=columns,
+                             show='headings',
+                             height=10)
 
-        self.elemnt = []
-        for row in UserController.search_email(self.search_string):
-            self.elemnt.append(
-                (row.id, row.name, row.email, row.age, row.registration_date)
-            )
-        # Вывод данных из списка self.elemnt в таблицу self.table_data
-        for item in self.elemnt:
-            self.table_data.insert("", END, values=item)
-        self.table_data.pack()
-        # Кнопка закрытия окна / перехода в главное
-        self.button_clouse = Button(self,text='Вернуться на главную страницу', command=self.destroy)
-        self.button_clouse.pack(anchor=CENTER)
-        # переход на главное окно
-        self.button_move = ttk.Button(self,text='Вернуться на главную страницу 2', command=self.move)
-        self.button_move.pack(anchor=CENTER)
+        # Настраиваем заголовки
+        headers = {
+            'id': '№',
+            'name': 'Имя',
+            'email': 'Почта',
+            'age': 'Возраст',
+            'registration_date': 'Дата регистрации'
+        }
 
-    def move(self):
-        from Views.UserView import UserView
-        window_home = UserView
-        self.destroy()
+        for col in columns:
+            table.heading(col, text=headers[col])
+            table.column(col, width=120, anchor='center')
+
+        # Заполняем таблицу
+        for result in results:
+            if isinstance(result, dict):
+                table.insert("", END, values=(
+                    result.get('id', ''),
+                    result.get('name', ''),
+                    result.get('email', ''),
+                    result.get('age', ''),
+                    result.get('registration_date', '')
+                ))
+            elif isinstance(result, (tuple, list)):
+                if len(result) >= 5:
+                    table.insert("", END, values=result[:5])
+                else:
+                    # Дополняем недостающие значения
+                    values = list(result)
+                    while len(values) < 5:
+                        values.append('')
+                    table.insert("", END, values=values)
+
+        # Скроллбар
+        scrollbar = ttk.Scrollbar(table_frame,
+                                  orient=VERTICAL,
+                                  command=table.yview)
+        table.configure(yscrollcommand=scrollbar.set)
+
+        scrollbar.pack(side=RIGHT, fill=Y)
+        table.pack(side=LEFT, fill=BOTH, expand=True)
+
+        # Кнопка закрытия
+        button_frame = ttk.Frame(main_frame)
+        button_frame.pack(pady=20)
+
+        button_close = ttk.Button(button_frame,
+                                  text='Закрыть',
+                                  command=window.destroy)
+        button_close.pack()
+
+
+# Для совместимости со старым кодом
+class SearchView:
+    """Обертка для совместимости"""
+
+    def __init__(self, master, search_string):
+        self.master = master
+        self.search_string = search_string
+
+    def show(self):
+        """Показать результаты (пустой метод для совместимости)"""
+        pass
 
 
 if __name__ == "__main__":
-    window = SearchView(search_string="")
-    window.mainloop()
+    # # Тестовые данные
+    # test_results = [
+    #     {'id': 1, 'name': 'Иван Иванов', 'email': 'ivan@example.com', 'age': 25, 'registration_date': '2023-01-15'},
+    #     {'id': 2, 'name': 'Мария Петрова', 'email': 'maria@example.com', 'age': 30, 'registration_date': '2023-02-20'},
+    #     {'id': 3, 'name': 'Алексей Сидоров', 'email': 'alexey@example.com', 'age': 35,
+    #      'registration_date': '2023-03-10'},
+    # ]
+
+    root = Tk()
+    root.withdraw()  # Скрываем главное окно
+    #
+    # # Показываем результаты
+    # SimpleSearchView.show_results(root, test_results, "тест")
+
+    root.mainloop()
