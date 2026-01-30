@@ -305,6 +305,7 @@ class UserView(Tk):
 
             print(f"Найдено результатов: {len(search_results)}")
 
+
             if not search_results:
                 messagebox.showinfo("Результаты поиска",
                                     f"Пользователи по запросу '{search_string}' не найдены")

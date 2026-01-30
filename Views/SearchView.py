@@ -118,6 +118,7 @@ class SearchView:
         pass
 
 
+
 if __name__ == "__main__":
     # # Тестовые данные
     # test_results = [
