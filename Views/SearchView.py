@@ -129,6 +129,7 @@ if __name__ == "__main__":
     #      'registration_date': '2023-03-10'},
     # ]
     #
+    #
     # root = Tk()
     # root.withdraw()  # Скрываем главное окно
     #
