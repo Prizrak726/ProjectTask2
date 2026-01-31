@@ -120,6 +120,7 @@ class SearchView:
 
 
 if __name__ == "__main__":
+    pass
     # # Тестовые данные
     # test_results = [
     #     {'id': 1, 'name': 'Иван Иванов', 'email': 'ivan@example.com', 'age': 25, 'registration_date': '2023-01-15'},
@@ -127,11 +128,11 @@ if __name__ == "__main__":
     #     {'id': 3, 'name': 'Алексей Сидоров', 'email': 'alexey@example.com', 'age': 35,
     #      'registration_date': '2023-03-10'},
     # ]
-
-    root = Tk()
-    root.withdraw()  # Скрываем главное окно
+    #
+    # root = Tk()
+    # root.withdraw()  # Скрываем главное окно
     #
     # # Показываем результаты
     # SimpleSearchView.show_results(root, test_results, "тест")
-
-    root.mainloop()
+    #
+    # root.mainloop()
