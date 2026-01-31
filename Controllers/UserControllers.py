@@ -26,7 +26,7 @@ class UserController:
     @classmethod
     def get(cls):
         # Выводит список записей из таблицы БД
-        return User.select()
+        return User.select().order_by(User.id)
 
     @classmethod
     def delete(cls, id):

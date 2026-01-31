@@ -109,10 +109,10 @@ class UserView(Tk):
         self.delete_button.pack(side=LEFT, padx=(0, 10))
 
         # Кнопка "Найти по ID" (дополнительная функция)
-        self.find_by_id_button = ttk.Button(delete_input_frame,
-                                            text="Найти по ID",
-                                            command=self.find_user_by_id)
-        self.find_by_id_button.pack(side=LEFT)
+        # self.find_by_id_button = ttk.Button(delete_input_frame,
+        #                                     text="Найти по ID",
+        #                                     command=self.find_user_by_id)
+        # self.find_by_id_button.pack(side=LEFT)
 
         # Создаем стиль для красной кнопки
         self.style = ttk.Style()
@@ -192,6 +192,9 @@ class UserView(Tk):
             if user_id_int <= 0:
                 messagebox.showwarning("Предупреждение", "ID должен быть положительным числом")
                 return
+            else:
+                messagebox.showwarning("Предупреждение", "ID не существует")
+
         except ValueError:
             messagebox.showwarning("Предупреждение", "ID должен быть числом")
             return
