@@ -11,7 +11,7 @@ class UserController:
     '''
     @classmethod
     def add(cls,name,email,age,registration_date):
-        # добавить предмет в Таблицу
+        # добавить пользователя в Таблицу
 
 
         try:
@@ -31,7 +31,7 @@ class UserController:
     @classmethod
     def delete(cls, id):
         pass
-        # Обновить запись по id
+        # Удалить запись по id
         User.delete().where(User.id == id).execute()
     @classmethod
     def search_email(cls,email):

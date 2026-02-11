@@ -14,3 +14,4 @@ class User(BaseModel):
 if __name__ == "__main__":
     mysql_db.create_tables([User])
 
+
