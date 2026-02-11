@@ -1,4 +1,4 @@
-from Models.Base import *
+from ProjectTask2.Models.Base import *
 
 class User(BaseModel):
     '''

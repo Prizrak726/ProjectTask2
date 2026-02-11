@@ -1,4 +1,4 @@
-from Models.User import *
+from ProjectTask2.Models.User import *
 
 class UserController:
     '''

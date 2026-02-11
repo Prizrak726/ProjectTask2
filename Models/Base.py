@@ -1,4 +1,4 @@
-from Connection.connect import *
+from ProjectTask2.Connection.connect import *
 
 class BaseModel(Model):
     class Meta:
